@@ -4,13 +4,11 @@ Audit Date: April 18, 2026
 Total Findings: 0 Critical · 0 High · 2 Medium · 3 Low · 2 Informational
 Final Status: PRODUCTION READY
 
-------------------------------------------------------------------
 
 EXECUTIVE SUMMARY
 
 A comprehensive security audit was conducted on the GravePresale and GraveToken smart contracts for the Grave Protocol platform. The audit covered presale mechanics, token economics, access control, upgradeability, and resistance to common attack vectors. All identified issues have been remediated. The final codebase meets mainnet security standards.
 
-------------------------------------------------------------------
 
 SCOPE
 
@@ -22,7 +20,6 @@ Contract: GravePresale.sol
 Primary Functionality: Owner-controlled presale with dynamic rate, EIP-712 signatures, caps, refund mode, timelocked withdrawals, 6-month admin sweep.
 Approx. LOC: 450
 
-------------------------------------------------------------------
 
 METHODOLOGY & RISK CLASSIFICATION
 
@@ -38,7 +35,6 @@ MEDIUM: Limited impact, edge-case failures, or deviations from best practices.
 LOW: Minor issues, code quality, or gas inefficiencies with negligible security impact.
 INFORMATIONAL: Suggestions for clarity or optimisation with no security risk.
 
-------------------------------------------------------------------
 
 FINDINGS
 
@@ -46,7 +42,6 @@ CRITICAL SEVERITY: NONE. All critical issues fully remediated.
 
 HIGH SEVERITY: NONE. All high-severity vulnerabilities fixed.
 
-------------------------------------------------------------------
 
 MEDIUM SEVERITY
 
@@ -56,11 +51,11 @@ Location: GravePresale.constructor
 Description: The maxPerWallet parameter was not validated against hardCap. A value larger than hardCap is pointless.
 
 Fixed Code:
-constructor(..., uint256 _hardCap, uint256 _maxPerWallet, ...) {
-    if (_maxPerWallet > _hardCap) revert InvalidParams();
-    hardCap = _hardCap;
-    maxPerWallet = _maxPerWallet;
-}
+    constructor(..., uint256 _hardCap, uint256 _maxPerWallet, ...) {
+        if (_maxPerWallet > _hardCap) revert InvalidParams();
+        hardCap = _hardCap;
+        maxPerWallet = _maxPerWallet;
+    }
 
 Status: Acknowledged (deployer responsibility)
 
@@ -70,14 +65,13 @@ Location: GravePresale._computeRate
 Description: The function iterates once per elapsed day (max 90 iterations). Gas cost ~30k, acceptable.
 
 Fixed Code (acceptable design):
-for (uint256 i = 0; i < daysElapsed; i++) {
-    rate = rate * DECAY_NUMERATOR / DECAY_DENOMINATOR;
-    if (rate < minRate) return minRate;
-}
+    for (uint256 i = 0; i < daysElapsed; i++) {
+        rate = rate * DECAY_NUMERATOR / DECAY_DENOMINATOR;
+        if (rate < minRate) return minRate;
+    }
 
 Status: Acknowledged
 
-------------------------------------------------------------------
 
 LOW SEVERITY
 
@@ -87,7 +81,7 @@ Location: GravePresale.startPresale
 Description: The PresaleStarted event already includes hardCap.
 
 Fixed Code (already correct):
-emit PresaleStarted(startTime, endTime, hardCap);
+    emit PresaleStarted(startTime, endTime, hardCap);
 
 Status: Already correct
 
@@ -97,7 +91,7 @@ Location: GravePresale.constructor
 Description: The presale contract trusts the provided allocation without verifying against the token's remaining mintable supply.
 
 Fixed Code (off-chain verification required):
-// Deployer must ensure: _maxGraveAllocation <= GRAVE_TOKEN.remainingMintable()
+    // Deployer must ensure: _maxGraveAllocation <= GRAVE_TOKEN.remainingMintable()
 
 Status: Acknowledged (deployer responsibility)
 
@@ -107,11 +101,10 @@ Location: GravePresale.deposit
 Description: The contract requires spotPrice > 0 to prevent disabling slippage protection.
 
 Fixed Code (intentional safeguard):
-if (spotPrice == 0) revert ZeroAmount();
+    if (spotPrice == 0) revert ZeroAmount();
 
 Status: Acknowledged (documentation required)
 
-------------------------------------------------------------------
 
 INFORMATIONAL
 
@@ -121,7 +114,7 @@ Location: GravePresale.claimRefund
 Description: The function emits RefundClaimed for each user – sufficient.
 
 Fixed Code:
-emit RefundClaimed(msg.sender, deposited);
+    emit RefundClaimed(msg.sender, deposited);
 
 Status: No action required
 
@@ -131,12 +124,11 @@ Location: GravePresale.rescueERC20
 Description: Rescue of PEPU_L2 and GRAVE_TOKEN is blocked; other ERC-20s can be rescued. Intentional.
 
 Fixed Code:
-if (token == address(PEPU_L2) || token == address(GRAVE_TOKEN))
-    revert CannotRescueProtectedToken(token);
+    if (token == address(PEPU_L2) || token == address(GRAVE_TOKEN))
+        revert CannotRescueProtectedToken(token);
 
 Status: No action required
 
-------------------------------------------------------------------
 
 FIXED ISSUES SUMMARY
 
@@ -170,7 +162,6 @@ Applied Fix: Added uint256[50] private __gap
 Original Problem: UPGRADER_ROLE self-admin without timelock
 Applied Fix: Added comments recommending TimelockController
 
-------------------------------------------------------------------
 
 DEPLOYMENT CHECKLIST
 
@@ -204,7 +195,6 @@ POST-DEPLOYMENT VERIFICATION
 [ ] Test refund mode if soft cap not reached.
 [ ] Test withdrawal timelock flow.
 
-------------------------------------------------------------------
 
 CONCLUSION
 
