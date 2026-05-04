@@ -1,9 +1,9 @@
-# 🔒 Grave Protocol – Final Audit & Test Report
+#  Grave Protocol – Final Audit & Test Report
 
 **Auditor:** Teck (Independent Dev / Security Advisor)  
 **Date:** May 3, 2026  
 **Network:** Base Sepolia Testnet (Chain ID: 84532)  
-**Status:** ✅ **PRODUCTION READY** (zero errors, all tests passed)
+**Status:**  **PRODUCTION READY** (zero errors, all tests passed)
 
 ---
 
@@ -78,10 +78,10 @@ A complete security audit and live testnet deployment were performed by **Teck**
 
 | Dependency | Address / Version | Criticality | Status |
 | :--- | :--- | :--- | :--- |
-| Chainlink ETH/USD feed (Base Sepolia) | `0x4aDC67696bA383F43DD60A9e78F2C97Fbbfc7cb1` | High | ✅ Working ($2,316.31 ETH, staleness <1h) |
-| USDC (Circle testnet) | `0x036CbD53842c5426634e7929541eC2318f3dCF7e` | High | ✅ Operational |
-| OpenZeppelin contracts | v5.0.2 | Required | ✅ Installed |
-| Base Sepolia RPC | `https://sepolia.base.org` | Required | ✅ Reachable |
+| Chainlink ETH/USD feed (Base Sepolia) | `0x4aDC67696bA383F43DD60A9e78F2C97Fbbfc7cb1` | High |  Working ($2,316.31 ETH, staleness <1h) |
+| USDC (Circle testnet) | `0x036CbD53842c5426634e7929541eC2318f3dCF7e` | High |  Operational |
+| OpenZeppelin contracts | v5.0.2 | Required |  Installed |
+| Base Sepolia RPC | `https://sepolia.base.org` | Required |  Reachable |
 
 ---
 
@@ -101,18 +101,18 @@ A complete security audit and live testnet deployment were performed by **Teck**
 
 | Test | Description | Result |
 | :--- | :--- | :--- |
-| 1 | Chainlink price feed integration | ✅ Passed |
-| 2 | Contract deployment (Timelock, Token, Presale) | ✅ Passed |
-| 3 | GraveToken initialization & distribution | ✅ Passed |
-| 4 | Access control (roles) | ✅ Passed |
-| 5 | Whitelist batch add | ✅ Passed |
-| 6 | Presale start (7 days) | ✅ Passed |
-| 7 | USDC deposits (3 users, $30 total) | ✅ Passed |
-| 8 | Cap enforcement (min, max per wallet, hard cap) | ✅ Passed |
-| 9 | Price calculation (USD → GRAVE) | ✅ Passed |
-| 10 | Oracle staleness & validation | ✅ Passed |
-| 11 | Withdrawal timelock (announce → wait → execute) | ✅ Passed |
-| 12 | Refund mode & admin sweep | ✅ Passed |
+| 1 | Chainlink price feed integration |  Passed |
+| 2 | Contract deployment (Timelock, Token, Presale) |  Passed |
+| 3 | GraveToken initialization & distribution |  Passed |
+| 4 | Access control (roles) |  Passed |
+| 5 | Whitelist batch add |  Passed |
+| 6 | Presale start (7 days) |  Passed |
+| 7 | USDC deposits (3 users, $30 total) |  Passed |
+| 8 | Cap enforcement (min, max per wallet, hard cap) |  Passed |
+| 9 | Price calculation (USD → GRAVE) |  Passed |
+| 10 | Oracle staleness & validation |  Passed |
+| 11 | Withdrawal timelock (announce → wait → execute) |  Passed |
+| 12 | Refund mode & admin sweep |  Passed |
 
 **Test evidence:**  
 - Deposits: 3 users each deposited $10 USDC → received 10,000 GRAVE (price $0.001).  
@@ -126,16 +126,16 @@ A complete security audit and live testnet deployment were performed by **Teck**
 
 | Control | Status |
 | :--- | :--- |
-| ReentrancyGuard on all fund‑moving functions | ✅ |
-| CEI pattern (state before external calls) | ✅ |
-| Access control (Ownable2Step, AccessControl) | ✅ |
-| Pausability (2 pausers) | ✅ |
-| Oracle staleness & positive price check | ✅ |
-| Withdrawal timelock + cooldown + 30% cap | ✅ |
-| Withdrawal blocked during active sale | ✅ |
-| Daily price growth with max cap (FOMO) | ✅ |
-| Batch whitelist (up to 500 users) | ✅ |
-| UUPS upgrade security (timelock‑protected) | ✅ |
+| ReentrancyGuard on all fund‑moving functions | Y |
+| CEI pattern (state before external calls) | Y |
+| Access control (Ownable2Step, AccessControl) | Y |
+| Pausability (2 pausers) | Y |
+| Oracle staleness & positive price check | Y |
+| Withdrawal timelock + cooldown + 30% cap | Y |
+| Withdrawal blocked during active sale | Y |
+| Daily price growth with max cap (FOMO) | Y |
+| Batch whitelist (up to 500 users) | Y |
+| UUPS upgrade security (timelock‑protected) | Y |
 
 ---
 
